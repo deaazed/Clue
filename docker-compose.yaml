@@ -1,0 +1,37 @@
+services:
+  aiza_app:
+    container_name: aiza  # Name of the container
+    image: aiza:latest  # Name and tag of the image
+    build:
+      context: .  # Path to the directory containing the Dockerfile
+      dockerfile: Dockerfile  # Dockerfile name
+    user: infodev  # User to run the container
+    depends_on:
+      - emulator
+    links:
+      - emulator
+    volumes:
+      - ./app:/home/infodev  # Mount the current directory to /home/infodev in the container
+    working_dir: /home/infodev  # Set working directory in the container
+    # command: flutter run  # Command to run your Flutter app
+    ports:
+      - "8080:8080"  # Flutter web app port
+    environment:
+      - FLUTTER_ENV=development  # You can pass environment variables
+    stdin_open: true  # Keeps stdin open
+    tty: true  # Enables terminal in container
+  emulator:
+    image: budtmo/docker-android:emulator_14.0
+    container_name: emulator  # Name of the container
+    ports:
+      - "6080:6080"  # noVNC port
+      - "5554:5554"  # ADB emulator console port
+      - "5555:5555"  # ADB port
+    privileged: true  # Required for running the emulator
+    environment:
+      - DEVICE="Samsung Galaxy S10"
+      - CONNECT_TO_LOCALHOST="true"
+      - AUTO_START="true"
+      - APPIUM=true  # Option to enable Appium (optional)
+      - ADB_CONNECT=true  # Automatically connect ADB
+      - WEB_VNC=true  # Option to enable noVNC (optional)
