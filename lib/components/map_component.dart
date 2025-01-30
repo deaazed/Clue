@@ -23,6 +23,7 @@ class Map extends StatefulWidget {
 
 class MapState extends State<Map> {
   LatLng _currentLocation = const LatLng(0.0, 0.0);
+  MapLibreMapController? _mapController;
 
   @override
   void initState() {
@@ -55,6 +56,18 @@ class MapState extends State<Map> {
     setState(() {
       _currentLocation = LatLng(position.latitude, position.longitude);
     });
+
+    if (_mapController != null) {
+      _mapController!.moveCamera(CameraUpdate.newLatLng(_currentLocation));
+
+      _mapController!.addSymbol(SymbolOptions(
+        geometry: _currentLocation,
+        iconSize: 1.5, // Adjust the icon size
+        textField: "Your Location", // Optional: Add a label
+        textSize: 14.0,
+        textOffset: const Offset(0, 1.5), // Adjust label position
+      ));
+    }
   }
 
   @override
@@ -64,11 +77,12 @@ class MapState extends State<Map> {
         styleString: "$styleUrl?key=$apiKey",
         myLocationEnabled: true,
         myLocationTrackingMode: MyLocationTrackingMode.tracking,
-        initialCameraPosition: CameraPosition(
-          target: _currentLocation,
+        initialCameraPosition: const CameraPosition(
+          target: LatLng(0, 0),
           zoom: 14.0,
         ),
         trackCameraPosition: true,
+        onMapCreated: (controller) => _mapController = controller,
       ),
     );
   }

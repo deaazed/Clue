@@ -20,41 +20,49 @@ class _NavbarComponentState extends State<NavbarComponent> {
   }
 
   Color _selectedIconColor(String route) {
-    return _selectedRoute == route ? Colors.grey.shade100 : Colors.grey.shade500;
+    return _selectedRoute == route ? const Color.fromRGBO(33, 7, 51, 1) : Colors.grey.shade500;
   }
   
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-      color: const Color.fromRGBO(33, 7, 51, 1),
+      height: 95,
+      color: Colors.white,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          IconButton(
-            icon: Icon(Icons.home, color: _selectedIconColor('/')),
-            onPressed: () => _setRoute('/'),
-          ),
-          IconButton(
-            icon: Icon(Icons.search, color: _selectedIconColor('/search')),
-            onPressed: () => _setRoute('/search'),
-          ),
-          IconButton(
-            icon: const Icon(Icons.qr_code_2, color: Colors.black, size: 30),
-            style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all(Colors.grey.shade100),
-              shape: WidgetStateProperty.all(const CircleBorder()),
-              padding: WidgetStateProperty.all(const EdgeInsets.all(10)),
+            Column(
+            children: [
+              IconButton(
+              icon: Icon(Icons.home, color: _selectedIconColor('/')),
+              onPressed: () => _setRoute('/'),
+              ),
+              Text('Home', style: TextStyle(color: _selectedIconColor('/'))),
+            ],
             ),
-            onPressed: () => _setRoute('/scan'),
-          ),
-          IconButton(
-            icon: Icon(Icons.map, color: _selectedIconColor('/map')),
-            onPressed: () => _setRoute('/map'),
-          ),
-          IconButton(
-            icon: Icon(Icons.person, color: _selectedIconColor('/profile')),
-            onPressed: () => _setRoute('/profile'),
-          )
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                icon: const Icon(Icons.qr_code_2, color: Colors.white, size: 30),
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.all(const Color.fromRGBO(33, 7, 51, 1)),
+                  shape: WidgetStateProperty.all(const CircleBorder()),
+                  padding: WidgetStateProperty.all(const EdgeInsets.all(10)),
+                ),
+                onPressed: () => _setRoute('/scan'),
+                )
+              ],
+            ),
+            Column(
+              children: [
+                IconButton(
+                  icon: Icon(Icons.map, color: _selectedIconColor('/map')),
+                  onPressed: () => _setRoute('/map'),
+                ),
+                Text('Map', style: TextStyle(color: _selectedIconColor('/map'))),
+              ],
+            ),
         ],
       ),
     );
